@@ -3,17 +3,33 @@ from sys import argv
 from command import Command
 
 # test -----------------
-# argv = ["", "show", r"C:\Users\Alddp\Desktop\movetest"]
+# argv = ["", "help"]
 # ------------------------
 
-command = Command()
+cmd = Command()
 
-command.selected = argv[1]
-try:
-    command.argv = argv[2]
-except IndexError as e:
+cmd.selected = argv[1]
 
-    if command.selected != "help":
-        print("请输入参数")
+command_found = False
 
-command.read_command()
+for command in cmd.command_list:
+    if cmd.selected in command["command"]:
+        command_found = True
+
+if command_found:
+    try:
+        cmd.init_listdir(argv[2])
+        cmd.read_command()
+
+    except IndexError as e:
+
+        if cmd.selected != "help":
+            print("没有输入参数\n")
+        elif cmd.selected == "help":
+            cmd.help()
+        else:
+            print(e)
+
+else:
+    print("命令错误")
+    cmd.help()

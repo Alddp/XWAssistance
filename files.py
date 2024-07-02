@@ -67,6 +67,54 @@ class File:
             print(f"{path}是空文件夹")
 
     @staticmethod
+    def chinese_to_arabic(name_list: list[str]) -> tuple[list, list]:
+        chinese_nums = {'零': '0', '一': '1', '二': '2', '三': '3', '四': '4',
+                        '五': '5', '六': '6', '七': '7', '八': '8', '九': '9',
+                        '十': '10'}
+        old_name_list = []
+        new_name_list = []
+        for str_with_digital in name_list:
+
+            pattern = r'[零一二三四五六七八九十]+'
+            matches = re.findall(pattern, str_with_digital)  # 匹配到的中文数字
+            if len(matches) > 0:
+                old_name_list.append(str_with_digital)
+                for word in matches:
+                    for char in word:
+                        str_with_digital = str_with_digital.replace(char, chinese_nums[char])
+
+                new_name_list.append(str_with_digital)  # 将转换后的字符串加入新列表
+            else:
+                pass
+
+        return old_name_list, new_name_list
+
+    def convert(self, name_list: list[str], file_path: str):
+        old_name_list, new_name_list = self.chinese_to_arabic(name_list)
+
+        for src, dst in zip(old_name_list, new_name_list):
+            src_path = os.path.join(file_path, src)
+            dst_path = os.path.join(file_path, dst)
+
+            if os.path.exists(dst_path):
+                response = input(f"File '{dst}' already exists. Do you want to overwrite it? (y/n): ")
+                if response.lower() == 'y':
+                    shutil.rmtree(dst_path)
+                    shutil.move(src_path, dst_path)
+                else:
+                    pass
+            else:
+                try:
+                    os.rename(src_path, dst_path)
+                    print(f"{src_path}\t->\t{dst_path}")
+                except FileNotFoundError:
+                    print(f"File '{src}' not found.")
+                except PermissionError:
+                    print(f"Permission denied to rename '{src}'.")
+                except Exception as e:
+                    print(e)
+
+    @staticmethod
     def command_format(target: str):
         names = os.listdir(target)
         formated_names = File.load_formate_names("res/formated_names.txt")
