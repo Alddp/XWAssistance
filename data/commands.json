@@ -1,0 +1,22 @@
+[
+  {
+    "command": "help",
+    "description": "Show this help message"
+  },
+  {
+    "command": "show",
+    "description": "Show all files in the directory"
+  },
+  {
+    "command": "simplify",
+    "description": "Simplified folder structure"
+  },
+  {
+    "command": "format",
+    "description": "Formate the folder name"
+  },
+  {
+    "command": "convert",
+    "description": "Convert Chinese numbers to Arabic numerals"
+  }
+]

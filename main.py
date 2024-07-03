@@ -1,35 +1,36 @@
 from sys import argv
 
-from command import Command
+from command import CommandManager
 
 # test -----------------
 # argv = ["", "simplify", r"C:\Users\Alddp\Desktop\simplify_test"]
 # ------------------------
 
-cmd = Command()
+command_manager = CommandManager()
+success = command_manager.init_commands()
 
-cmd.selected = argv[1]
+command_manager.selected = argv[1]
 
 command_found = False
 
-for command in cmd.command_list:
-    if cmd.selected in command["command"]:
+for command in command_manager.command_list:
+    if command_manager.selected in command["command"]:
         command_found = True
 
 if command_found:
     try:
-        cmd.init_listdir(argv[2])
-        cmd.read_command()
+        command_manager.init_listdir(argv[2])
+        command_manager.read_command()
 
     except IndexError as e:
 
-        if cmd.selected != "help":
+        if command_manager.selected != "help":
             print("没有输入参数\n")
-        elif cmd.selected == "help":
-            cmd.help()
+        elif command_manager.selected == "help":
+            command_manager.help()
         else:
             print(e)
 
 else:
     print("命令错误")
-    cmd.help()
+    command_manager.help()
