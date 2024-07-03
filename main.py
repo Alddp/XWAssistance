@@ -3,7 +3,7 @@ from sys import argv
 from command import Command
 
 # test -----------------
-# argv = ["", "help"]
+# argv = ["", "simplify", r"C:\Users\Alddp\Desktop\simplify_test"]
 # ------------------------
 
 cmd = Command()

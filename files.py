@@ -43,28 +43,37 @@ class File:
 
     @staticmethod
     def simplify_file_path(path: str):
-        """
-        如果文件夹下只有一个同名文件夹,则将同名文件夹下的所有文件移动到当前文件夹，删除同名空文件夹
-        :param path: 要简化的文件路径
-        """
-        file_names = os.listdir(path)  # 获取路径下的文件
-        len_is_one = len(file_names) == 1  # 内层只有一个文件
+        for filename in os.listdir(path):
+            file_path = os.path.join(path, filename)
+            if os.path.isdir(file_path):
+                File.simplify_file(path, filename)
+            else:
+                print(f"{file_path}不是文件夹")
 
-        if len_is_one:
-            inner_filename = os.path.join(path, file_names[0])  # 获取内层同名文件路径
+    @staticmethod
+    def simplify_file(path, filename: str):
+        """
+        如果文件夹下只有一个文件夹,则将文件夹下的所有文件移动到当前文件夹，删除同名文件夹
+        :param path: 文件路径  path/filename
+        :param filename: 要简化的文件名
+        """
+        file_names = os.listdir(os.path.join(path, filename))  # 获取子目录列表
+        listdir_len = len(file_names)
+
+        if listdir_len == 1:  # 内层只有一个文件
+            inner_filename = os.path.join(path, filename, file_names[0])  # 获取内层文件路径
 
             isdir = os.path.isdir(inner_filename)  # 判断这个文件是否为文件夹
             if isdir:
-                dst = path
+                dst = os.path.join(path, filename)
                 for item in os.listdir(inner_filename):
                     shutil.move(os.path.join(inner_filename, item), dst)
                     shutil.rmtree(inner_filename) if len(os.listdir(inner_filename)) == 0 else None
 
-                    print(f"简化嵌套文件{path}")
-            else:
-                print(f"{inner_filename}不是文件夹")
-        else:
-            print(f"{path}是空文件夹")
+                    print(f"简化嵌套文件{os.path.join(filename, file_names[0], item)}\t->\t{dst}")
+                print()
+        elif listdir_len == 0:
+            print(f"{filename}是空文件夹")
 
     @staticmethod
     def chinese_to_arabic(name_list: list[str]) -> tuple[list, list]:
