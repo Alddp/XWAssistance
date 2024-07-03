@@ -1,17 +1,24 @@
 import os
 import re
 import shutil
+import sys
 
 
 class File:
     """文件操作类"""
 
     @staticmethod
-    def load_formate_names(filename: str):
+    def load_formate_names(filename: str) -> list[str]:
         """读取姓名模板"""
+        try:
+            with open(f"{filename}", "r", encoding="utf-8") as f:
+                formated_names = f.readlines()
+        except FileNotFoundError:
+            print("请创建文件./res/formated_names.txt 将预设名单存入formated_names.txt")
+            sys.exit()
+        except Exception as e:
+            print(e)
 
-        with open(f"{filename}", "r", encoding="utf-8") as f:
-            formated_names = f.readlines()
         formated_names = [s.strip() for s in formated_names]  # 去除空白符
         print(f"{filename}Loading formated names...")
         return formated_names
