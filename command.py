@@ -55,7 +55,9 @@ class Command:
 
     def help(self):
         for item in self.command_list:
-            print(f"{item["command"]}\t\t{item["description"]}\n")
+            if item["command"] == "help":
+                continue
+            print(f"command: {item["command"]}\ndescription: {item["description"]}\n")
 
     @staticmethod
     def show(path: str):
