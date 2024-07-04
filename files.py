@@ -77,7 +77,7 @@ class File:
                     shutil.move(os.path.join(inner_filename, item), dst)
                     shutil.rmtree(inner_filename) if len(os.listdir(inner_filename)) == 0 else None
 
-                    print(f"简化嵌套文件{os.path.join(filename, file_names[0], item)}\t->\t{dst}")
+                    print(f"简化嵌套文件\t{os.path.join(filename, file_names[0], item)}\t->\t{dst}")
                 print()
         elif listdir_len == 0:
             print(f"{filename}是空文件夹")
@@ -116,7 +116,11 @@ class File:
                 response = input(f"File '{dst}' already exists. Do you want to overwrite it? (y/n): ")
                 if response.lower() == 'y':
                     shutil.rmtree(dst_path)
-                    shutil.move(src_path, dst_path)
+                    # TODO:处理文件子目录中的文件移动时文件同名无法移动
+                    try:
+                        shutil.move(src_path, dst_path)
+                    except Exception as e:
+                        print(e)
                 else:
                     pass
             else:

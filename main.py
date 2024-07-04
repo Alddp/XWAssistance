@@ -3,7 +3,7 @@ from sys import argv
 from command import CommandManager
 
 # test -----------------
-# argv = ["", "simplify", r"C:\Users\Alddp\Desktop\simplify_test"]
+# argv = ["", "help"]
 # ------------------------
 
 command_manager = CommandManager()
@@ -14,6 +14,8 @@ command_manager.selected = argv[1]
 command_found = False
 
 for command in command_manager.command_list:
+    if command_found:
+        break
     if command_manager.selected in command["command"]:
         command_found = True
 
