@@ -48,6 +48,7 @@ class File:
 
         return matched_names, matched_formated_names
 
+    # =============================================================================
     @staticmethod
     def simplify_file_path(path: str):
         for filename in os.listdir(path):
@@ -74,14 +75,24 @@ class File:
             if isdir:
                 dst = os.path.join(path, filename)
                 for item in os.listdir(inner_filename):
-                    shutil.move(os.path.join(inner_filename, item), dst)
-                    shutil.rmtree(inner_filename) if len(os.listdir(inner_filename)) == 0 else None
+                    try:
+                        shutil.move(os.path.join(inner_filename, item), dst)
+                        shutil.rmtree(inner_filename) if len(os.listdir(inner_filename)) == 0 else None
+                    except shutil.Error:
+                        os.rename(os.path.join(inner_filename, item),
+                                  os.path.join(inner_filename, item + "_del"))  # 重命名冲突文件
+                        shutil.move(os.path.join(inner_filename), dst)  # 重试移动
+                        shutil.rmtree(inner_filename + "_del") if len(os.listdir(inner_filename)) == 0 else None
+
+                    except Exception as e:
+                        print(e)
 
                     print(f"简化嵌套文件\t{os.path.join(filename, file_names[0], item)}\t->\t{dst}")
                 print()
         elif listdir_len == 0:
             print(f"{filename}是空文件夹")
 
+    # =================================================================================
     @staticmethod
     def chinese_to_arabic(name_list: list[str]) -> tuple[list, list]:
         chinese_nums = {'零': '0', '一': '1', '二': '2', '三': '3', '四': '4',
@@ -134,6 +145,7 @@ class File:
                 except Exception as e:
                     print(e)
 
+    # =================================================================================
     @staticmethod
     def command_format(target: str):
         names = os.listdir(target)
@@ -152,3 +164,8 @@ class File:
                 print(f"{name}\t->\t{matched_formated_names[i]}")
         else:
             print("长度不一")
+
+
+if __name__ == '__main__':
+    f = File()
+    f.simplify_file_path(r"C:\Users\Alddp\Desktop\movetest")

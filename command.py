@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 
 from files import File
 
@@ -27,6 +28,7 @@ class CommandManager:
         - FileNotFoundError: 如果命令文件不存在。
         - json.JSONDecodeError: 如果无法解析命令文件。
         """
+        commands_file = os.path.join(CommandManager.get_exe_path(), r"data/commands.json")
         try:
             with open(commands_file, 'r') as file:
                 commands = json.load(file)
@@ -45,6 +47,24 @@ class CommandManager:
             print(e)
 
         return False
+
+    @staticmethod
+    def get_exe_path():
+        # 尝试从环境变量中获取可执行文件的路径
+        self_path = ""
+
+        # PyInstaller创建的可执行文件会在环境变量PATH中临时包含_MEIPASS路径
+        meipass = os.environ.get('_MEIPASS', '')
+        if meipass:  # _MEIPASS存在，则_exe位于此目录
+            self_path = os.path.abspath(meipass)
+        else:  # 否则尝试从sys.executable获取
+            self_path = os.path.dirname(os.path.abspath(sys.executable))
+
+        if self_path:
+
+            return self_path
+        else:
+            print("无法确定程序所在路径。")
 
     def help(self):
         for item in self.command_list:

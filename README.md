@@ -6,7 +6,7 @@
 
 2. 输入`main 命令 参数`
 
-**注意：**使用`format`命令要提前将要格式化的txt名单放到res目录中，并命名为`formated_names.txt`
+**注意**:使用`format`命令要提前将要格式化的txt名单放到res目录中，并命名为`formated_names.txt`
 
 ## 命令列表
 
