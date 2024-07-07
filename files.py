@@ -3,13 +3,19 @@ import re
 import shutil
 import sys
 
-
 class File:
-    """文件操作类"""
+    """
+    文件操作类，提供文件名格式化、中文数字转阿拉伯数字等功能。
+    """
 
     @staticmethod
-    def load_formate_names(filename: str) -> list[str]:
-        """读取姓名模板"""
+    def load_format_names(filename: str) -> list[str]:
+        """
+        从指定文件中加载格式化后的姓名列表。
+
+        :param filename: 文件名，包含路径。
+        :return: 格式化后的姓名列表。
+        """
         try:
             with open(f"{filename}", "r", encoding="utf-8") as f:
                 formated_names = f.readlines()
@@ -20,12 +26,17 @@ class File:
             print(e)
 
         formated_names = [s.strip() for s in formated_names]  # 去除空白符
-        print(f"{filename}Loading formated names...")
+
         return formated_names
 
     @staticmethod
     def remove_other_elements(input_string):
-        """去除无关元素只留下姓名"""
+        """
+        去除字符串中的非姓名元素。
+
+        :param input_string: 待处理的字符串。
+        :return: 处理后的字符串。
+        """
         # TODO: 防止去除的字符串包含姓名
         input_string = re.sub(r'[号页设计期末班物联网]', '', input_string)
         result = "".join(re.findall(r'[\u4e00-\u9fff]', string=input_string))
@@ -34,7 +45,13 @@ class File:
 
     @staticmethod
     def match_names(names: list, formated_names: list):
-        """匹配姓名后格式化命名"""
+        """
+        将原始姓名列表与格式化姓名列表进行匹配。
+
+        :param names: 原始姓名列表。
+        :param formated_names: 格式化后的姓名列表。
+        :return: 匹配成功的原始姓名与格式化姓名的元组列表。
+        """
         matched_names = []
         matched_formated_names = []
 
@@ -48,53 +65,14 @@ class File:
 
         return matched_names, matched_formated_names
 
-    # =============================================================================
-    @staticmethod
-    def simplify_file_path(path: str):
-        for filename in os.listdir(path):
-            file_path = os.path.join(path, filename)
-            if os.path.isdir(file_path):
-                File.simplify_file(path, filename)
-            else:
-                print(f"{file_path}不是文件夹")
-
-    @staticmethod
-    def simplify_file(path, filename: str):
-        """
-        如果文件夹下只有一个文件夹,则将文件夹下的所有文件移动到当前文件夹，删除同名文件夹
-        :param path: 文件路径  path/filename
-        :param filename: 要简化的文件名
-        """
-        file_names = os.listdir(os.path.join(path, filename))  # 获取子目录列表
-        listdir_len = len(file_names)
-
-        if listdir_len == 1:  # 内层只有一个文件
-            inner_filename = os.path.join(path, filename, file_names[0])  # 获取内层文件路径
-
-            isdir = os.path.isdir(inner_filename)  # 判断这个文件是否为文件夹
-            if isdir:
-                dst = os.path.join(path, filename)
-                for item in os.listdir(inner_filename):
-                    try:
-                        shutil.move(os.path.join(inner_filename, item), dst)
-                        shutil.rmtree(inner_filename) if len(os.listdir(inner_filename)) == 0 else None
-                    except shutil.Error:
-                        os.rename(os.path.join(inner_filename, item),
-                                  os.path.join(inner_filename, item + "_del"))  # 重命名冲突文件
-                        shutil.move(os.path.join(inner_filename), dst)  # 重试移动
-                        shutil.rmtree(inner_filename + "_del") if len(os.listdir(inner_filename)) == 0 else None
-
-                    except Exception as e:
-                        print(e)
-
-                    print(f"简化嵌套文件\t{os.path.join(filename, file_names[0], item)}\t->\t{dst}")
-                print()
-        elif listdir_len == 0:
-            print(f"{filename}是空文件夹")
-
-    # =================================================================================
     @staticmethod
     def chinese_to_arabic(name_list: list[str]) -> tuple[list, list]:
+        """
+        将姓名中的中文数字转换为阿拉伯数字。
+
+        :param name_list: 姓名列表。
+        :return: 原始姓名列表和转换后的姓名列表。
+        """
         chinese_nums = {'零': '0', '一': '1', '二': '2', '三': '3', '四': '4',
                         '五': '5', '六': '6', '七': '7', '八': '8', '九': '9',
                         '十': '10'}
@@ -117,6 +95,12 @@ class File:
         return old_name_list, new_name_list
 
     def convert(self, name_list: list[str], file_path: str):
+        """
+        对文件或目录中的文件进行命名转换。
+
+        :param name_list: 需要转换的文件名列表。
+        :param file_path: 文件或目录的路径。
+        """
         old_name_list, new_name_list = self.chinese_to_arabic(name_list)
 
         for src, dst in zip(old_name_list, new_name_list):
@@ -145,27 +129,44 @@ class File:
                 except Exception as e:
                     print(e)
 
-    # =================================================================================
     @staticmethod
     def command_format(target: str):
+        """
+        格式化指定目录下的文件名。
+
+        :param target: 目标目录的路径。
+        """
+        # 列出目标目录中的所有文件名
         names = os.listdir(target)
-        formated_names = File.load_formate_names("res/formated_names.txt")
+        # 加载预定义的格式化文件名列表
+        formated_names = File.load_format_names("res/formated_names.txt")
+        # 将目录中的文件名与预定义的格式化文件名进行匹配
         matched_names, matched_formated_names = File.match_names(names, formated_names)
 
+        # 检查是否有相同数量的匹配文件名
         if len(matched_names) == len(matched_formated_names):
+            # 遍历匹配的文件名列表
+            formated_times = 0
             for i, name in enumerate(matched_names):
+                # 构建原始文件路径和目标文件路径
                 res = os.path.join(target, name)
                 des = os.path.join(target, matched_formated_names[i])
-                try:
-                    shutil.move(res, des)
-                except Exception as e:
-                    print(f"Error: {e}")
+                if res == des:
+                    continue
+                else:
+                    try:
+                        # 尝试将文件重命名为格式化后的文件名
+                        shutil.move(res, des)
+                        formated_times += 1
+                    except Exception as e:
+                        # 如果重命名过程中发生错误，打印错误信息
+                        print(f"Error: {e}")
 
-                print(f"{name}\t->\t{matched_formated_names[i]}")
+                    # 打印文件重命名的结果
+                    print(f"{name}\t->\t{matched_formated_names[i]}")
+            if formated_times == 0:
+                print("文件都格式化了")
         else:
+            # 如果匹配的文件名数量不一致，提示用户
             print("长度不一")
 
-
-if __name__ == '__main__':
-    f = File()
-    f.simplify_file_path(r"C:\Users\Alddp\Desktop\movetest")
