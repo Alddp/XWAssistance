@@ -1,9 +1,10 @@
 import json
 import os
+from pathlib import Path
 from sys import argv
+
 from files import File
 from simplify_file import FileSimplifier
-from pathlib import Path
 
 
 # 命令管理类，负责处理和执行不同的命令

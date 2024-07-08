@@ -1,4 +1,5 @@
 from sys import argv
+
 from command import CommandManager
 
 # 初始化命令管理器，准备处理命令
