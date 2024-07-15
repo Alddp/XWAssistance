@@ -1,22 +1,19 @@
-[
-  {
-    "command": "help",
-    "description": "Show this help message"
+{
+  "files": {
+    "help": "Show this help message",
+    "show": "Show all files in the directory",
+    "simplify": "Simplified folder structure",
+    "format": "Format the folder name",
+    "convert": "Convert Chinese numbers to Arabic numerals"
   },
-  {
-    "command": "show",
-    "description": "Show all files in the directory"
-  },
-  {
-    "command": "simplify",
-    "description": "Simplified folder structure"
-  },
-  {
-    "command": "format",
-    "description": "Formate the folder name"
-  },
-  {
-    "command": "convert",
-    "description": "Convert Chinese numbers to Arabic numerals"
+  "solitaire": {
+    "export": "Export the datas to path",
+    "config": {
+      "app_id": "app_id:",
+      "secret": "secret:"
+    }
   }
-]
+}
+
+
+

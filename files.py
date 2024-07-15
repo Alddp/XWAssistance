@@ -11,6 +11,17 @@ class File:
     """
 
     @staticmethod
+    def show(path: str):
+        """
+        打印指定路径下的文件和目录列表。
+
+        :param path: str 要列出内容的路径。
+        """
+        names = os.listdir(path)
+        for name in names:
+            print(name)
+
+    @staticmethod
     def load_format_names(filename: Path) -> list[str]:
         """
         从指定文件中加载格式化后的姓名列表。
