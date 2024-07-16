@@ -37,6 +37,8 @@
 
 输入`xw help`，将显示所有可用命令及其简要说明。
 
+<img src=".\docs\help_demo.gif"  />
+
 #### `show`命令
 
 显示指定文件夹下的所有文件。例如，要显示`/path/to/folder`下的文件，输入：
@@ -44,6 +46,8 @@
 ```bash
 xw show /path/to/folder
 ```
+
+<img src=".\docs\show_demo.gif"  />
 
 #### `format`和`convert`命令
 
@@ -59,6 +63,8 @@ xw convert /path/to/folder
 
 请确保在使用`format`命令前已将格式化名单（`formated_names.txt`）放置在res目录中。
 
+![](.\docs\format_demo.gif)
+
 #### `simplify`命令
 
 该命令用于简化具有相同名称的解压后的文件夹结构。例如：
@@ -66,3 +72,5 @@ xw convert /path/to/folder
 ```bash
 xw simplify /path/to/folder
 ```
+
+![](./docs/simplify_demo.gif)
