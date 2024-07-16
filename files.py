@@ -7,15 +7,15 @@ from pathlib import Path
 
 class File:
     """
-    提供文件操作相关的方法，包括文件名格式化、中文数字转阿拉伯数字等。
+    文件操作类，提供文件和目录的处理功能。
     """
 
     @staticmethod
     def show(path: str):
         """
-        打印指定路径下的文件和目录列表。
+        列出指定路径下的所有文件和目录。
 
-        :param path: str 要列出内容的路径。
+        :param path: 字符串，指定的路径。
         """
         names = os.listdir(path)
         for name in names:
@@ -24,9 +24,9 @@ class File:
     @staticmethod
     def load_format_names(filename: Path) -> list[str]:
         """
-        从指定文件中加载格式化后的姓名列表。
+        从文件中加载格式化后的姓名列表。
 
-        :param filename: 包含格式化姓名的文件路径。
+        :param filename: pathlib.Path对象，指定的文件路径。
         :return: 格式化后的姓名列表。
         """
         try:
@@ -114,12 +114,15 @@ class File:
         :param file_path: 文件或目录的路径。
         """
         old_name_list, new_name_list = self.chinese_to_arabic(name_list)
+        if len(old_name_list) == 0:
+            print("没有要转换的文件")
 
         for src, dst in zip(old_name_list, new_name_list):
-            src_path = os.path.join(file_path, src)
-            dst_path = os.path.join(file_path, dst)
 
-            if os.path.exists(dst_path):
+            src_path = Path(file_path) / src
+            dst_path = Path(file_path) / dst
+
+            if dst_path.exists():
                 response = input(f"File '{dst}' already exists. Do you want to overwrite it? (y/n): ")
                 if response.lower() == 'y':
                     shutil.rmtree(dst_path)
@@ -128,11 +131,11 @@ class File:
                     except Exception as e:
                         print(e)
                 else:
-                    pass
+                    sys.exit()
             else:
                 try:
                     os.rename(src_path, dst_path)
-                    print(f"{src_path}\t->\t{dst_path}")
+                    print(f"{src}\t->\t{dst}")
                 except FileNotFoundError:
                     print(f"File '{src}' not found.")
                 except PermissionError:
@@ -159,8 +162,8 @@ class File:
         if len(matched_names) == len(matched_formated_names):
             formated_times = 0
             for i, name in enumerate(matched_names):
-                res = os.path.join(target, name)
-                des = os.path.join(target, matched_formated_names[i])
+                res = Path(target) / name
+                des = Path(target) / matched_formated_names[i]
                 if res == des:
                     continue
                 else:

@@ -1,12 +1,16 @@
-from sys import argv
+import sys
 
 from command import CommandManager
 
 # 初始化命令管理器，准备处理命令
 command_manager = CommandManager()
-# 设置命令管理器的参数为系统传入的命令行参数
-# argv = ['xw', "convert", r"C:\Users\Administrator\Desktop\test"]
-command_manager.argv = argv
+
+if len(sys.argv) < 2:
+    print("没有输入参数")
+    sys.exit(0)
+
+command_manager.argv = sys.argv
+
 command_manager.init_argv()
 # 初始化命令管理器中的命令
 success = command_manager.init_commands()

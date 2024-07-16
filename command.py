@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 from pathlib import Path
 
 from files import File
@@ -34,14 +35,17 @@ class CommandManager:
         self.exe_path_absolute = Path(os.path.realpath(self.argv[0]))  # 执行程序的路径
         # 获取用户选择的命令
         self.selected = self.argv[1]  # 用户选择的命令
+
         # 如果选择的不是帮助命令，则获取文件路径和文件名列表
         # TODO: 优化提示
-        if self.selected != "help" and self.selected != "config":
+        selected = self.argv[1]
+
+        if selected != "help" and selected != "config":
             try:
                 self.file_path = self.argv[2]  # 文件或目录路径
             except IndexError:
                 print("缺少参数")
-                exit()
+                sys.exit()
 
     # 初始化命令列表
     def init_commands(self, commands_data_relative=r'data/commands.json'):
@@ -49,7 +53,7 @@ class CommandManager:
         commands_data_absolute = self.exe_path_absolute.parent / commands_data_relative
         try:
             # 加载命令数据文件
-            with open("data/commands.json", "r", encoding="utf-8") as f:
+            with open(commands_data_absolute, "r", encoding="utf-8") as f:
                 data = json.load(f)
 
             # 更新命令列表
@@ -93,7 +97,6 @@ class CommandManager:
         elif self.selected == "export":
             form_id = self.argv[2]
             save_path = self.argv[3]
-
             sol = Solitaire(form_id)
             sol.export_files(save_path)
 
@@ -104,5 +107,3 @@ class CommandManager:
 
             with open("data/solitaire.json", "w", encoding="utf-8") as f:
                 json.dump({"app_id": app_id, "secret": secret}, f, ensure_ascii=False, indent=4)
-
-    # 打印指定路径下的文件和目录列表
