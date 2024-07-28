@@ -2,37 +2,29 @@ import sys
 
 from command import CommandManager
 
-# 初始化命令管理器，准备处理命令
-command_manager = CommandManager()
 
-if len(sys.argv) < 2:
-    print("没有输入参数")
-    sys.exit(0)
+def main():
+    command_manager = CommandManager()
 
-command_manager.argv = sys.argv
+    if len(sys.argv) < 2:
+        print("没有输入参数")
+        sys.exit(0)
 
-command_manager.init_argv()
-# 初始化命令管理器中的命令
-success = command_manager.init_commands()
+    command_manager.argv = sys.argv
 
-try:
-    # 执行匹配的命令
-    command_manager.read_command()
+    command_manager.init_argv()
 
-# 捕获IndexError异常
-except IndexError as e:
+    command_manager.init_commands()
 
-    # 如果选定的命令不是帮助命令，提示没有输入参数
-    if command_manager.selected != "help":
-        # 提示没有输入参数
-        print("没有输入参数\n")
+    try:
+        # 执行匹配的命令
+        command_manager.read_command()
 
-    # 如果选定的是帮助命令，执行帮助函数
-    elif command_manager.selected == "help":
-        # 执行帮助命令
-        command_manager.help()
+    # 捕获IndexError异常
+    except IndexError as e:
 
-    # 如果是其他异常，打印异常信息
-    else:
-        # 打印异常信息
         print(e)
+
+
+# sys.argv = [r'D:\Codes\Python\XwAssistance\xw.py', 'config']
+main()

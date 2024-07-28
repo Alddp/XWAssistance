@@ -4,6 +4,8 @@ import shutil
 import sys
 from pathlib import Path
 
+from deco import FileError
+
 
 class File:
     """
@@ -38,7 +40,7 @@ class File:
         except Exception as e:
             print(e)
 
-        formated_names = [s.strip() for s in formated_names]  # 去除空白符
+        formated_names = [name.strip() for name in formated_names]  # 去除空白符
 
         return formated_names
 
@@ -144,7 +146,8 @@ class File:
                     print(e)
 
     @staticmethod
-    def command_format(target: str, exe_path_absolute: Path):
+    @FileError.output
+    def command_format(target: str, exe_path_absolute: Path) -> int:
         """
         根据命令行参数对文件或目录进行格式化处理。
 
@@ -152,8 +155,13 @@ class File:
         :param exe_path_absolute: 执行程序的绝对路径。
         """
         names = os.listdir(target)
-        # 加载预定义的格式化文件名列表
-        formated_names = File.load_format_names(exe_path_absolute.parent / "res/formated_names.txt")
+
+        filename = exe_path_absolute.parent / "res/formated_names.txt"
+
+        formated_names = File.load_format_names(filename)
+        if len(formated_names) == 0:
+            print(f"{filename}内容为空")
+            sys.exit()
 
         # 将目录中的文件名与预定义的格式化文件名进行匹配
         matched_names, matched_formated_names = File.match_names(names, formated_names)
@@ -167,14 +175,8 @@ class File:
                 if res == des:
                     continue
                 else:
-                    try:
-                        shutil.move(res, des)
-                        formated_times += 1
-                    except Exception as e:
-                        print(f"Error: {e}")
+                    shutil.move(res, des)
+                    formated_times += 1
 
-                    print(f"{name}\t->\t{matched_formated_names[i]}")
-            if formated_times == 0:
-                print("文件都格式化了")
-        else:
-            print("长度不一")
+                print(f"{name}\t->\t{matched_formated_names[i]}")
+            return formated_times

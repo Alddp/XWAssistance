@@ -25,6 +25,7 @@ class FileSimplifier:
         此方法遍历初始路径下的所有文件和目录，对每个文件或只包含一个文件的目录
         创建一个映射关系，最终将复杂的路径简化为直接指向最终文件的简单路径。
         """
+
         for file in self.filename.iterdir():
 
             relative_path = []
@@ -53,6 +54,8 @@ class FileSimplifier:
             key.rename(value)
 
             print(f"{key}\t---->\t{value}")
+        # TODO:提取函数
+        print(f"处理了{len(self.map.keys())}个文件")
 
     def __goto_final(self, file: Path, relative_path) -> list[str]:
         """

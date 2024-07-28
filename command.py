@@ -31,14 +31,12 @@ class CommandManager:
 
     # 初始化命令行参数
     def init_argv(self):
-        # 获取执行程序的绝对路径
-        self.exe_path_absolute = Path(os.path.realpath(self.argv[0]))  # 执行程序的路径
-        # 获取用户选择的命令
-        self.selected = self.argv[1]  # 用户选择的命令
-
         # 如果选择的不是帮助命令，则获取文件路径和文件名列表
         # TODO: 优化提示
         selected = self.argv[1]
+
+        self.exe_path_absolute = Path(os.path.realpath(self.argv[0]))  # 执行程序的路径
+        self.selected = self.argv[1]  # 用户选择的命令
 
         if selected != "help" and selected != "config":
             try:
@@ -81,29 +79,34 @@ class CommandManager:
     # 根据选择的命令执行相应的操作
     def read_command(self):
         # 根据选择执行相应的命令处理
-        if self.selected == "help":
-            self.help()
-        elif self.selected == "show":
-            self.file.show(self.file_path)
-        elif self.selected == "simplify":
-            sp = FileSimplifier(self.file_path)
-            sp.simplify()
-        elif self.selected == "format":
-            self.file.command_format(self.file_path, self.exe_path_absolute)
-        elif self.selected == "convert":
-            self.name_list = os.listdir(self.file_path)
-            self.file.convert(self.name_list, self.file_path)
+        match self.selected:
+            case "help":
+                self.help()
+            case "show":
+                self.file.show(self.file_path)
+            case "simplify":
+                sp = FileSimplifier(self.file_path)
+                sp.simplify()
+            case "format":
+                formated_times = self.file.command_format(self.file_path, self.exe_path_absolute)
 
-        elif self.selected == "export":
-            form_id = self.argv[2]
-            save_path = self.argv[3]
-            sol = Solitaire(form_id)
-            sol.export_files(save_path)
+                print("文件都格式化了") if formated_times == 0 else print(f"处理了 {formated_times} 个文件")
 
-        elif self.selected == "config":
+            case "convert":
+                self.name_list = os.listdir(self.file_path)
+                self.file.convert(self.name_list, self.file_path)
+            case "export":
+                form_id = self.argv[2]
+                save_path = self.argv[3]
+                sol = Solitaire(form_id)
+                sol.export_files(save_path)
 
-            app_id = input("Please enter your appid:")
-            secret = input("Please enter your secret:")
+            case "config":
+                app_id = input("Please enter your appid:")
+                secret = input("Please enter your secret:")
 
-            with open("data/solitaire.json", "w", encoding="utf-8") as f:
-                json.dump({"app_id": app_id, "secret": secret}, f, ensure_ascii=False, indent=4)
+                with open(self.exe_path_absolute.parent / "data/solitaire.json", "w", encoding="utf-8") as f:
+                    json.dump({"app_id": app_id, "secret": secret}, f, ensure_ascii=False, indent=4)
+            case _:
+                print("无效命令")
+                sys.exit()
