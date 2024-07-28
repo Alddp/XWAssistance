@@ -155,6 +155,14 @@ class File:
         :param exe_path_absolute: 执行程序的绝对路径。
         """
         names = os.listdir(target)
+        # new_names = [name for name in names if Path(name).is_dir()]
+        new_names = []
+        for name in names:
+
+            if Path(target, name).is_dir():
+                new_names.append(name)
+            else:
+                print("format:跳过", name)
 
         filename = exe_path_absolute.parent / "res/formated_names.txt"
 
@@ -164,7 +172,7 @@ class File:
             sys.exit()
 
         # 将目录中的文件名与预定义的格式化文件名进行匹配
-        matched_names, matched_formated_names = File.match_names(names, formated_names)
+        matched_names, matched_formated_names = File.match_names(new_names, formated_names)
 
         # 检查是否有相同数量的匹配文件名
         if len(matched_names) == len(matched_formated_names):

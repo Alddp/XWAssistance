@@ -1,4 +1,6 @@
 import json
+import os
+from pathlib import Path
 
 import requests
 
@@ -9,6 +11,9 @@ class Solitaire:
     head_url = "https://form.qun100.com"
 
     def __init__(self, form_id):
+        # 初始化绝对执行路径
+        self._exe_path_absolute: Path = Path()
+
         self.app_id = ""
         self.secret = ""
         self.form_id = form_id
@@ -19,9 +24,19 @@ class Solitaire:
         self.urls = []  # 文件地址
         self.filenames = []  # 文件名
 
+    @property
+    def exe_path_absolute(self):
+        return self._exe_path_absolute
+
+    @exe_path_absolute.setter
+    def exe_path_absolute(self, path: Path):
+        self._exe_path_absolute = Path(os.path.realpath(path))
+
     def __init_info(self):
         """初始化信息"""
-        with open("data/solitaire.json", 'r', encoding='utf-8') as f:
+        p = self._exe_path_absolute.parent / "data/solitaire.json"
+
+        with open(p, 'r', encoding='utf-8') as f:
             data = json.load(f)
             self.app_id = data["app_id"]
             self.secret = data["secret"]

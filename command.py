@@ -99,6 +99,7 @@ class CommandManager:
                 form_id = self.argv[2]
                 save_path = self.argv[3]
                 sol = Solitaire(form_id)
+                sol.exe_path_absolute = self.argv[0]
                 sol.export_files(save_path)
 
             case "config":

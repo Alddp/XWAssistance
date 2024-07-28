@@ -28,6 +28,11 @@ class FileSimplifier:
 
         for file in self.filename.iterdir():
 
+            # 排除其他类型文件
+            if not file.is_dir():
+                print("simplify:跳过", file.name)
+                continue
+
             relative_path = []
             relative_path = self.__goto_final(file, relative_path)
 

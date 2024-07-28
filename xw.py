@@ -26,5 +26,5 @@ def main():
         print(e)
 
 
-# sys.argv = [r'D:\Codes\Python\XwAssistance\xw.py', 'config']
+# sys.argv = [r'D:\Codes\Python\XwAssistance\xw.py', 'format', r"C:\Users\Alddp\Desktop\test"]
 main()
