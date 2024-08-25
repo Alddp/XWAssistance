@@ -16,20 +16,20 @@
 
 ### 命令列表
 
-|     命令     |   参数    |        功能        |        开发进度         |
-|:----------:|:-------:|:----------------:|:-------------------:|
-|   `help`   |    无    |      显示所有命令      |      `Finish`       |
-|   `show`   | `文件夹路径` |  显示指定文件夹下的所有文件   |      `Finish`       |
-|  `format`  | `文件夹路径` |    匹配姓名后格式化命名    |      `Finish`       |
-| `convert`  | `文件夹路径` |   将中文大写转换为拉伯数字   |      `Finish`       |
-| `simplify` | `文件夹路径` |    简化单文件夹多层嵌套    |      `Finish`       |
-|            |         |                  |                     |
-|            |         | 一键导出未交名单 (接龙API) | `under development` |
-|  `export`  | `保存路径`  | 一键导出文件链接 (接龙API) | `under development` |
-|            |         |                  |                     |
-|            |         |       考勤统计       | `under development` |
-|            |         |     自动写旷课明细      | `under development` |
-|            |         |      课堂回答统计      | `under development` |
+|    命令    |     参数     |                        功能                         |      开发进度       |
+| :--------: | :----------: | :-------------------------------------------------: | :-----------------: |
+|   `help`   |      无      |                    显示所有命令                     |      `Finish`       |
+|   `show`   | `文件夹路径` |             显示指定文件夹下的所有文件              |      `Finish`       |
+|  `format`  | `文件夹路径` |                匹配姓名后格式化命名                 |      `Finish`       |
+| `convert`  | `文件夹路径` |              将中文大写转换为拉伯数字               |      `Finish`       |
+| `simplify` | `文件夹路径` |                简化单文件夹多层嵌套                 |      `Finish`       |
+|  `config`  |      无      | 保存接龙的`app_id`和`secret`到`data\solitaire.json` |      `Finish`       |
+|            |              |             一键导出未交名单 (接龙API)              | `under development` |
+|  `export`  |  `保存路径`  |             一键导出文件链接 (接龙API)              |      `Finish`       |
+|            |              |                                                     |                     |
+|            |              |                      考勤统计                       | `under development` |
+|            |              |                   自动写旷课明细                    | `under development` |
+|            |              |                    课堂回答统计                     | `under development` |
 
 ### 示例
 
@@ -74,3 +74,5 @@ xw simplify /path/to/folder
 ```
 
 ![simplify_demo](./docs/simplify_demo.gif)
+
+#### 
