@@ -37,7 +37,7 @@
 
 输入`xw help`，将显示所有可用命令及其简要说明。
 
-![help_demo](./docs/help_demo.gif)
+![help_demo](docs/v1.0.0/help_demo.gif)
 
 #### `show`命令
 
@@ -47,7 +47,7 @@
 xw show /path/to/folder
 ```
 
-![show_demo](./docs/show_demo.gif)
+![show_demo](docs/v1.0.0/show_demo.gif)
 
 #### `format`和`convert`命令
 
@@ -63,7 +63,7 @@ xw convert /path/to/folder
 
 请确保在使用`format`命令前已将格式化名单（`formated_names.txt`）放置在res目录中。
 
-![format_demo](./docs/format_demo.gif)
+![format_demo](docs/v1.0.0/format_demo.gif)
 
 #### `simplify`命令
 
@@ -73,6 +73,6 @@ xw convert /path/to/folder
 xw simplify /path/to/folder
 ```
 
-![simplify_demo](./docs/simplify_demo.gif)
+![simplify_demo](docs/v1.0.0/simplify_demo.gif)
 
 #### 
