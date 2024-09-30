@@ -26,8 +26,7 @@ class MyWindow(QWidget, ConfigUI):
         self.f_names_pte.textChanged.connect(self.update_files_count)
 
     def update_files_count(self):
-        self.save_pb.setEnabled(True
-                                )
+        self.save_pb.setEnabled(True)
         names_len = len(self.names_pte.toPlainText().split('\n'))
         f_names_len = len(self.f_names_pte.toPlainText().split('\n'))
 

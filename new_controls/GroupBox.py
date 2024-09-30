@@ -1,29 +1,36 @@
-from PySide6.QtCore import Signal, QSize, Qt
-
-from PySide6.QtWidgets import QGroupBox, QWidget, QApplication, QBoxLayout, QVBoxLayout, QLabel
+from PySide6.QtCore import Signal, Qt
+from PySide6.QtWidgets import QGroupBox, QLabel, QVBoxLayout, QBoxLayout
 
 
 class DragDropGroupBox(QGroupBox):
     file_dropped = Signal(str)
 
-    def __init__(self, parent=None):
+    def __init__(self, group_box: QGroupBox, parent=None):
         super().__init__(parent)
 
-        self.path = ""
+        # 复制 group_box 的属性
+        # self.setTitle(group_box.title())
+        # self.setStyleSheet(group_box.styleSheet())  # 复制样式表
+        self.setCheckable(group_box.isCheckable())
+        self.setMinimumSize(group_box.minimumSize())
+        self.setMaximumSize(group_box.maximumSize())
         self.setAcceptDrops(True)
-        self.setObjectName(u"groupBox")
-        self.setMinimumSize(QSize(150, 100))
-        self.setMaximumSize(QSize(150, 100))
 
+        # 开启拖放功能
+        self.setAcceptDrops(True)
+        self.path = ""
+
+        # 创建标签
         self.label = QLabel("拖动文件到这")
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
+        # 设置布局
         layout = QVBoxLayout()
         layout.addWidget(self.label)
         self.setLayout(layout)
 
     def insert_to_Layout(self, layout: QBoxLayout):
-        layout.insertWidget(1, self, 0,
+        layout.insertWidget(2, self, 0,
                             Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
         return self
 
@@ -37,4 +44,4 @@ class DragDropGroupBox(QGroupBox):
         for url in event.mimeData().urls():
             self.path = url.toLocalFile()
             self.file_dropped.emit(self.path)
-            print(self.path)
+            print(f"File dropped: {self.path}")

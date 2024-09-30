@@ -15,17 +15,17 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
-    QLabel, QPlainTextEdit, QPushButton, QSizePolicy,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
+    QPlainTextEdit, QPushButton, QSizePolicy, QVBoxLayout,
+    QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(368, 430)
-        self.gridLayout = QGridLayout(Form)
-        self.gridLayout.setObjectName(u"gridLayout")
+        Form.resize(377, 430)
+        self.horizontalLayout_3 = QHBoxLayout(Form)
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.horizontalLayout = QHBoxLayout()
@@ -36,7 +36,7 @@ class Ui_Form(object):
         self.name_lb.setObjectName(u"name_lb")
         self.name_lb.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.verticalLayout.addWidget(self.name_lb, 0, Qt.AlignmentFlag.AlignHCenter)
+        self.verticalLayout.addWidget(self.name_lb)
 
         self.names_pte = QPlainTextEdit(Form)
         self.names_pte.setObjectName(u"names_pte")
@@ -47,6 +47,13 @@ class Ui_Form(object):
 
         self.horizontalLayout.addLayout(self.verticalLayout)
 
+        self.line_2 = QFrame(Form)
+        self.line_2.setObjectName(u"line_2")
+        self.line_2.setFrameShape(QFrame.Shape.VLine)
+        self.line_2.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.horizontalLayout.addWidget(self.line_2)
+
         self.verticalLayout_2 = QVBoxLayout()
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.f_name_lb = QLabel(Form)
@@ -54,7 +61,7 @@ class Ui_Form(object):
         self.f_name_lb.setMinimumSize(QSize(168, 0))
         self.f_name_lb.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
-        self.verticalLayout_2.addWidget(self.f_name_lb, 0, Qt.AlignmentFlag.AlignHCenter)
+        self.verticalLayout_2.addWidget(self.f_name_lb)
 
         self.f_names_pte = QPlainTextEdit(Form)
         self.f_names_pte.setObjectName(u"f_names_pte")
@@ -98,7 +105,7 @@ class Ui_Form(object):
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
 
 
-        self.gridLayout.addLayout(self.verticalLayout_3, 0, 0, 1, 1)
+        self.horizontalLayout_3.addLayout(self.verticalLayout_3)
 
 
         self.retranslateUi(Form)

@@ -15,18 +15,20 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
-    QGroupBox, QHBoxLayout, QHeaderView, QLineEdit,
-    QPushButton, QSizePolicy, QTableWidget, QTableWidgetItem,
+from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGroupBox,
+    QHBoxLayout, QHeaderView, QLineEdit, QPushButton,
+    QSizePolicy, QSpacerItem, QTableWidget, QTableWidgetItem,
     QToolButton, QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(652, 536)
-        self.gridLayout = QGridLayout(Form)
-        self.gridLayout.setObjectName(u"gridLayout")
+        Form.resize(590, 578)
+        self.verticalLayout_4 = QVBoxLayout(Form)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.horizontalLayout_4 = QHBoxLayout()
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.verticalLayout_2 = QVBoxLayout()
@@ -79,34 +81,44 @@ class Ui_Form(object):
         self.verticalLayout_3.addLayout(self.horizontalLayout_3)
 
 
-        self.gridLayout.addLayout(self.verticalLayout_3, 0, 0, 1, 1)
+        self.horizontalLayout_4.addLayout(self.verticalLayout_3)
 
         self.line = QFrame(Form)
         self.line.setObjectName(u"line")
         self.line.setFrameShape(QFrame.Shape.VLine)
         self.line.setFrameShadow(QFrame.Shadow.Sunken)
 
-        self.gridLayout.addWidget(self.line, 0, 1, 1, 1)
+        self.horizontalLayout_4.addWidget(self.line)
 
         self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.add_names_pb = QPushButton(Form)
         self.add_names_pb.setObjectName(u"add_names_pb")
+        self.add_names_pb.setMaximumSize(QSize(275, 16777215))
 
         self.verticalLayout.addWidget(self.add_names_pb)
 
+        self.verticalSpacer_4 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout.addItem(self.verticalSpacer_4)
+
         self.groupBox = QGroupBox(Form)
         self.groupBox.setObjectName(u"groupBox")
-        self.groupBox.setMinimumSize(QSize(150, 100))
-        self.groupBox.setMaximumSize(QSize(150, 100))
+        self.groupBox.setMinimumSize(QSize(200, 150))
+        self.groupBox.setMaximumSize(QSize(300, 150))
         self.groupBox.setAcceptDrops(True)
 
-        self.verticalLayout.addWidget(self.groupBox, 0, Qt.AlignmentFlag.AlignHCenter|Qt.AlignmentFlag.AlignVCenter)
+        self.verticalLayout.addWidget(self.groupBox, 0, Qt.AlignmentFlag.AlignHCenter)
+
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout.addItem(self.verticalSpacer_2)
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.fp_led = QLineEdit(Form)
         self.fp_led.setObjectName(u"fp_led")
+        self.fp_led.setMaximumSize(QSize(243, 16777215))
 
         self.horizontalLayout.addWidget(self.fp_led)
 
@@ -118,18 +130,38 @@ class Ui_Form(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout)
 
+        self.verticalSpacer_3 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout.addItem(self.verticalSpacer_3)
+
         self.comboBox = QComboBox(Form)
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
         self.comboBox.setObjectName(u"comboBox")
+        self.comboBox.setMinimumSize(QSize(152, 30))
+        self.comboBox.setMaximumSize(QSize(300, 16777215))
+        self.comboBox.setContextMenuPolicy(Qt.ContextMenuPolicy.PreventContextMenu)
+        self.comboBox.setStyleSheet(u"font: 9pt \"Microsoft YaHei UI\";\n"
+"font: 700 12pt \"Consolas\";")
 
         self.verticalLayout.addWidget(self.comboBox)
 
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout.addItem(self.verticalSpacer)
+
         self.preview_pb = QPushButton(Form)
         self.preview_pb.setObjectName(u"preview_pb")
+        self.preview_pb.setMaximumSize(QSize(275, 16777215))
 
         self.verticalLayout.addWidget(self.preview_pb)
 
 
-        self.gridLayout.addLayout(self.verticalLayout, 0, 2, 1, 1)
+        self.horizontalLayout_4.addLayout(self.verticalLayout)
+
+
+        self.verticalLayout_4.addLayout(self.horizontalLayout_4)
 
 
         self.retranslateUi(Form)
@@ -147,6 +179,10 @@ class Ui_Form(object):
         self.add_names_pb.setText(QCoreApplication.translate("Form", u"\u6dfb\u52a0\u540d\u5355", None))
         self.groupBox.setTitle("")
         self.select_fp_tb.setText(QCoreApplication.translate("Form", u"...", None))
+        self.comboBox.setItemText(0, QCoreApplication.translate("Form", u"Format", None))
+        self.comboBox.setItemText(1, QCoreApplication.translate("Form", u"Simplify", None))
+        self.comboBox.setItemText(2, QCoreApplication.translate("Form", u"Convert", None))
+
         self.preview_pb.setText(QCoreApplication.translate("Form", u"\u9884\u89c8", None))
     # retranslateUi
 

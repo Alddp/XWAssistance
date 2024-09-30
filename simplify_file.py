@@ -26,24 +26,6 @@ class FileSimplifier:
         创建一个映射关系，最终将复杂的路径简化为直接指向最终文件的简单路径。
         """
 
-        for file in self.filename.iterdir():
-
-            # 排除其他类型文件
-            if not file.is_dir():
-                print("simplify:跳过", file.name)
-                continue
-
-            relative_path = []
-            relative_path = self.__goto_final(file, relative_path)
-
-            if len(relative_path) > 0:
-                filename_temp = self.__create_temp_name(file)
-                self.temps.append(filename_temp)
-
-                final_file = filename_temp.joinpath(*relative_path)
-
-                self.__add_map(final_file, file)
-
         self.move_with_map()
         self.del_temps()
         if len(self.map.keys()) == 0:
@@ -57,10 +39,6 @@ class FileSimplifier:
         """
         for key, value in self.map.items():
             key.rename(value)
-
-            print(f"{key}\t---->\t{value}")
-        # TODO:提取函数
-        print(f"处理了{len(self.map.keys())}个文件")
 
     def __goto_final(self, file: Path, relative_path) -> list[str]:
         """

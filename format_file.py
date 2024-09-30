@@ -11,6 +11,8 @@ class FormateFile:
         self.names: list[str] = []  # 学生名
         self.target_data: dict[str, str] = {}  # {'待处理名':'标准名', ...}
 
+        self.work_space = ""
+
     def init(self, path: str, fp: str = config_path):
         """
         初始化函数，直接加载所有属性
@@ -71,3 +73,8 @@ class FormateFile:
                 # 如果有错误，记录所有匹配的行
                 rows = [[name, f_name] for name in names for f_name in f_names if name in f_name]
                 writer.writerows(rows)
+
+    def rename_to_target(self):
+        # TODO:
+        for k, value in self.target_data.items():
+            print(k, value)
