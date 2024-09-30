@@ -8,16 +8,23 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QMetaObject, QSize, Qt)
-from PySide6.QtWidgets import (QComboBox, QFrame, QGridLayout,
-                               QGroupBox, QHBoxLayout, QLineEdit,
-                               QPushButton, QTableWidget, QToolButton, QVBoxLayout)
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
+    QGroupBox, QHBoxLayout, QHeaderView, QLineEdit,
+    QPushButton, QSizePolicy, QTableWidget, QTableWidgetItem,
+    QToolButton, QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(570, 518)
+        Form.resize(652, 508)
         self.gridLayout = QGridLayout(Form)
         self.gridLayout.setObjectName(u"gridLayout")
         self.verticalLayout_3 = QVBoxLayout()
@@ -39,33 +46,38 @@ class Ui_Form(object):
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
 
+
         self.verticalLayout_3.addLayout(self.verticalLayout_2)
 
         self.tableWidget = QTableWidget(Form)
         self.tableWidget.setObjectName(u"tableWidget")
         self.tableWidget.setMinimumSize(QSize(0, 400))
         self.tableWidget.setMaximumSize(QSize(16777215, 16777215))
+        self.tableWidget.setAcceptDrops(False)
+        self.tableWidget.setDragEnabled(True)
 
         self.verticalLayout_3.addWidget(self.tableWidget)
 
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.refresh_pb = QPushButton(Form)
-        self.refresh_pb.setObjectName(u"refresh_pb")
+        self.auto_width_pb = QPushButton(Form)
+        self.auto_width_pb.setObjectName(u"auto_width_pb")
 
-        self.horizontalLayout_3.addWidget(self.refresh_pb)
+        self.horizontalLayout_3.addWidget(self.auto_width_pb)
 
-        self.cancle_pb = QPushButton(Form)
-        self.cancle_pb.setObjectName(u"cancle_pb")
+        self.back_pb = QPushButton(Form)
+        self.back_pb.setObjectName(u"back_pb")
 
-        self.horizontalLayout_3.addWidget(self.cancle_pb)
+        self.horizontalLayout_3.addWidget(self.back_pb)
 
         self.start_pb = QPushButton(Form)
         self.start_pb.setObjectName(u"start_pb")
 
         self.horizontalLayout_3.addWidget(self.start_pb)
 
+
         self.verticalLayout_3.addLayout(self.horizontalLayout_3)
+
 
         self.gridLayout.addLayout(self.verticalLayout_3, 0, 0, 1, 1)
 
@@ -87,8 +99,9 @@ class Ui_Form(object):
         self.groupBox.setObjectName(u"groupBox")
         self.groupBox.setMinimumSize(QSize(150, 100))
         self.groupBox.setMaximumSize(QSize(150, 100))
+        self.groupBox.setAcceptDrops(True)
 
-        self.verticalLayout.addWidget(self.groupBox, 0, Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignVCenter)
+        self.verticalLayout.addWidget(self.groupBox, 0, Qt.AlignmentFlag.AlignHCenter|Qt.AlignmentFlag.AlignVCenter)
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -102,6 +115,7 @@ class Ui_Form(object):
 
         self.horizontalLayout.addWidget(self.select_fp_tb)
 
+
         self.verticalLayout.addLayout(self.horizontalLayout)
 
         self.comboBox = QComboBox(Form)
@@ -114,7 +128,9 @@ class Ui_Form(object):
 
         self.verticalLayout.addWidget(self.preview_pb)
 
+
         self.gridLayout.addLayout(self.verticalLayout, 0, 2, 1, 1)
+
 
         self.retranslateUi(Form)
 
@@ -125,11 +141,12 @@ class Ui_Form(object):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
         self.search_led.setPlaceholderText(QCoreApplication.translate("Form", u"\u8f93\u5165\u5173\u952e\u8bcd", None))
         self.search_pb.setText(QCoreApplication.translate("Form", u"\u641c\u7d22", None))
-        self.refresh_pb.setText(QCoreApplication.translate("Form", u"\u5237\u65b0\u5217\u8868", None))
-        self.cancle_pb.setText(QCoreApplication.translate("Form", u"\u64a4\u9500", None))
+        self.auto_width_pb.setText(QCoreApplication.translate("Form", u"\u81ea\u52a8\u5217\u5bbd", None))
+        self.back_pb.setText(QCoreApplication.translate("Form", u"\u64a4\u9500", None))
         self.start_pb.setText(QCoreApplication.translate("Form", u"\u5f00\u59cb", None))
         self.add_names_pb.setText(QCoreApplication.translate("Form", u"\u6dfb\u52a0\u540d\u5355", None))
         self.groupBox.setTitle("")
         self.select_fp_tb.setText(QCoreApplication.translate("Form", u"...", None))
         self.preview_pb.setText(QCoreApplication.translate("Form", u"\u9884\u89c8", None))
     # retranslateUi
+

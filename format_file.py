@@ -3,7 +3,7 @@ from pathlib import Path
 
 
 class FormateFile:
-    config_path = "./res/data.csv"
+    config_path = "config/data.csv"
 
     def __init__(self):
         self.p_names: list[str] = []  # 准备处理的名
