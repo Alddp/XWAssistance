@@ -3,6 +3,7 @@ from PySide6.QtWidgets import QWidget, QApplication, QTableWidgetItem, QMessageB
 from UI.main_ui import Ui_Form as MainUi
 from Window.config import MyWindow as ConfigWindow
 from format_file import FormateFile
+from new_controls.GroupBox import DragDropGroupBox
 
 
 class MyWindow(QWidget, MainUi):
@@ -18,26 +19,33 @@ class MyWindow(QWidget, MainUi):
 
         self.back_pb.setEnabled(False)
 
+        # 移除并替换默认的groupBox为DragDropGroupBox
+        self.verticalLayout.removeWidget(self.groupBox)
+        self.groupBox.deleteLater()
+        self.groupBox = DragDropGroupBox().insert_to_Layout(self.verticalLayout)
+
         self.bind()
 
     def bind(self):
+        # 绑定信号与槽函数
         self.add_names_pb.clicked.connect(self.show_config)
         self.preview_pb.clicked.connect(lambda: self.update_tableView())
         self.auto_width_pb.clicked.connect(lambda: self.tableWidget.resizeColumnsToContents())
+        self.groupBox.file_dropped.connect(self.fp_led.setText)
 
     @staticmethod
     def show_config():
+        # 显示配置窗口
         edit_ui = ConfigWindow()
         edit_ui.load_history()
         edit_ui.show()
 
     def update_tableView(self):
+        # 更新tableview数据
         self.ff.init(self.fp_led.text())
-        """ 更新tableview数据 """
         self.tableWidget.clear()
         try:
             count = len(self.ff.target_data.keys())
-            # self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
             self.tableWidget.setColumnCount(3)
             self.tableWidget.setHorizontalHeaderLabels(['folder', f'匹配:{count}', 'target'])
             self.tableWidget.setRowCount(count)

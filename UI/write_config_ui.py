@@ -8,10 +8,16 @@
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import (QCoreApplication, QMetaObject, QSize, Qt)
-from PySide6.QtWidgets import (QFrame, QGridLayout, QHBoxLayout,
-                               QLabel, QPlainTextEdit, QPushButton, QVBoxLayout)
-
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
+    QLabel, QPlainTextEdit, QPushButton, QSizePolicy,
+    QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -38,6 +44,7 @@ class Ui_Form(object):
 
         self.verticalLayout.addWidget(self.names_pte)
 
+
         self.horizontalLayout.addLayout(self.verticalLayout)
 
         self.verticalLayout_2 = QVBoxLayout()
@@ -55,7 +62,9 @@ class Ui_Form(object):
 
         self.verticalLayout_2.addWidget(self.f_names_pte)
 
+
         self.horizontalLayout.addLayout(self.verticalLayout_2)
+
 
         self.verticalLayout_3.addLayout(self.horizontalLayout)
 
@@ -85,22 +94,24 @@ class Ui_Form(object):
 
         self.horizontalLayout_2.addWidget(self.close_pb)
 
+
         self.verticalLayout_3.addLayout(self.horizontalLayout_2)
 
+
         self.gridLayout.addLayout(self.verticalLayout_3, 0, 0, 1, 1)
+
 
         self.retranslateUi(Form)
 
         QMetaObject.connectSlotsByName(Form)
-
     # setupUi
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
         self.name_lb.setText(QCoreApplication.translate("Form", u"\u59d3\u540d", None))
-        self.f_name_lb.setText(
-            QCoreApplication.translate("Form", u"\u8981\u683c\u5f0f\u5316\u7684\u6587\u4ef6\u540d", None))
+        self.f_name_lb.setText(QCoreApplication.translate("Form", u"\u8981\u683c\u5f0f\u5316\u7684\u6587\u4ef6\u540d", None))
         self.info_lb.setText("")
         self.save_pb.setText(QCoreApplication.translate("Form", u"\u4fdd\u5b58", None))
         self.close_pb.setText(QCoreApplication.translate("Form", u"\u5173\u95ed", None))
     # retranslateUi
+
