@@ -1,5 +1,6 @@
 import shutil
 from pathlib import Path
+from typing import Dict, List
 
 
 class FileSimplifier:
@@ -8,86 +9,86 @@ class FileSimplifier:
     以减少文件路径的复杂性，方便文件管理和访问。
     """
 
-    def __init__(self, path: str):
+    def __init__(self, work_space: str):
         """
         初始化文件简化器，设定初始路径。
 
-        :param path: 需要简化的文件或目录的路径。
+        :param work_space: 需要简化的文件或目录的路径。
         """
-        self.map: dict[Path, Path] = {}
-        self.filename = Path(path)
-        self.temps: list[Path] = []
+        self.map: Dict[Path, Path] = {}
+        self.work_space = Path(work_space)
+        self.log: Dict[Path, List[Path]] = {}
 
     def simplify(self):
         """
-        简化路径中的所有文件和目录。
-
-        此方法遍历初始路径下的所有文件和目录，对每个文件或只包含一个文件的目录
-        创建一个映射关系，最终将复杂的路径简化为直接指向最终文件的简单路径。
+        简化文件路径的主方法，包括加载映射、日志和解析日志。
         """
+        self.load_map()
+        self.load_log()
+        self.parse_log()
 
-        self.move_with_map()
-        self.del_temps()
-        if len(self.map.keys()) == 0:
-            print("没有要优化的文件")
-
-    def move_with_map(self):
+    def parse_log(self):
         """
-        根据映射关系移动文件。
-
-        此方法遍历映射关系，将文件从复杂路径移动到简化后的路径。
+        解析日志并处理文件移动过程中可能出现的冲突。
         """
-        for key, value in self.map.items():
-            key.rename(value)
+        for main_folder, inner_files in self.log.items():
+            crack_name = None
+            renamed_file = None
+            for inner_file in inner_files:
+                try:
+                    shutil.move(inner_file, main_folder)
+                except shutil.Error:
+                    temp_name = main_folder / (inner_file.name + ".tmp")
+                    crack_name = main_folder / inner_file.name
+                    # 重命名冲突的文件为temp_name并移出
+                    renamed_file = inner_file.rename(temp_name)
+                except Exception as e:
+                    print(f"移动文件时发生错误：{e}")
 
-    def __goto_final(self, file: Path, relative_path) -> list[str]:
+            # 删除空文件夹
+            if crack_name and crack_name.exists() and not any(crack_name.iterdir()):
+                crack_name.rmdir()
+                # 恢复文件名为inner_file.name
+                if renamed_file:
+                    renamed_file.rename(renamed_file.parent / renamed_file.name.removesuffix(".tmp"))
+
+    def load_log(self) -> Dict[Path, List[Path]]:
         """
-        递归地找到目录中的最终文件。
+        加载日志，记录每个文件夹及其对应的文件。
 
-        :param file: 当前检查的文件或目录。
-        :param relative_path: 从初始文件到当前文件的路径列表。
-        :return: 当前文件到最终文件的相对路径。
+        :return: 包含文件夹及其文件的字典。
         """
-        if file.is_dir():
-            filenames = [i for i in file.iterdir()]
+        for final_folder_p, folder_p in self.map.items():
+            self.log[folder_p] = [file for file in final_folder_p.iterdir()]
+        return self.log
 
-            if len(filenames) == 1 and filenames[0].is_dir():
-                inner_file = filenames[0]
-                relative_path.append(inner_file.name)
-                self.__goto_final(inner_file, relative_path)
-        return relative_path
-
-    def del_temps(self):
+    def load_map(self) -> Dict[Path, Path]:
         """
-        删除在简化过程中创建的临时文件夹。
+        存储一层路径和深层路径的映射。
+        键是深层路径，值是一层路径。
 
-        此方法用于清理简化过程中生成的临时文件夹，以保持文件系统的整洁。
+        :return: 包含路径映射的字典。
         """
-        for temp in self.temps:
-            try:
-                shutil.rmtree(temp)
-                print(f"delete........ {temp}")
-            except Exception as e:
-                print(e)
+        for folder_p in self.work_space.iterdir():
+            if not folder_p.is_dir():
+                continue
+            if (final_folder_p := self.got_to_final(folder_p)) != folder_p:
+                self.map[final_folder_p] = folder_p
+        return self.map
 
-    def __create_temp_name(self, filename: Path):
+    def got_to_final(self, folder_p: str | Path) -> Path:
         """
-        为文件创建一个临时名称。
+        递归查找最终的文件夹。
 
-        :param filename: 需要创建临时名称的文件。
-        :return: 文件的临时名称。
+        :param folder_p: 文件夹路径。
+        :return: 最终的文件夹路径。
         """
-        # 为文件创建临时名称以避免命名冲突无法移动
+        folder_p = Path(folder_p) if isinstance(folder_p, str) else folder_p
 
-        filename_temp = Path(str(filename) + "_temp")  # 添加临时temp后缀
-        self.__add_map(filename, filename_temp)
-        return filename_temp
+        files = [folder for folder in folder_p.iterdir() if folder.is_dir() or folder.is_file()]
+        return folder_p if len(files) != 1 else self.got_to_final(files[0])
 
-    def __add_map(self, rsc, dst):
-        """
-        添加资源文件和目标文件的映射关系。
 
-        :param rsc: 资源文件路径。
-        :param dst: 目标文件路径。
-        """
-        self.map[rsc] = dst
+if __name__ == '__main__':
+    fs = FileSimplifier(r"C:\Users\Alddp\Desktop\main")
+    fs.simplify()

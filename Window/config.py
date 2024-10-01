@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QWidget, QApplication, QMessageBox
 
 from UI.write_config_ui import Ui_Form as ConfigUI
-from format_file import FormateFile
+from format_file import FileFormater
 
 
 class MyWindow(QWidget, ConfigUI):
@@ -9,7 +9,7 @@ class MyWindow(QWidget, ConfigUI):
         super().__init__()
         self.setupUi(self)
 
-        self.ff = FormateFile()
+        self.ff = FileFormater()
 
         self.bind()
 
@@ -37,7 +37,7 @@ class MyWindow(QWidget, ConfigUI):
         """ 从配置文件中加载历史数据，并将其显示在界面上"""
 
         try:
-            names, f_names = self.ff.read_data(FormateFile.config_path)
+            names, f_names = self.ff.read_data(FileFormater.config_path)
 
             self.names_pte.setPlainText('\n'.join(names))
             self.f_names_pte.setPlainText('\n'.join(f_names))
@@ -59,7 +59,7 @@ class MyWindow(QWidget, ConfigUI):
         f_names = [name.strip() for name in self.f_names_pte.toPlainText().split("\n") if name]
         # 调用格式化文件处理类的写配置方法，将处理后的数据列表写入文件
         try:
-            FormateFile.write_formate_config(names, f_names)
+            FileFormater.write_formate_config(names, f_names)
             # 更新界面信息栏，通知用户配置已成功保存
             self.info_lb.setText("保存成功!")
             self.save_pb.setEnabled(False)

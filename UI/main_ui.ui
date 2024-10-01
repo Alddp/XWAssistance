@@ -65,9 +65,9 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
-          <widget class="QPushButton" name="auto_width_pb">
+          <widget class="QPushButton" name="show_skip_pb">
            <property name="text">
-            <string>自动列宽</string>
+            <string>查看未交</string>
            </property>
           </widget>
          </item>

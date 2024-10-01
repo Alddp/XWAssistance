@@ -2,7 +2,7 @@ import csv
 from pathlib import Path
 
 
-class FormateFile:
+class FileFormater:
     config_path = "config/data.csv"
 
     def __init__(self):
@@ -11,7 +11,15 @@ class FormateFile:
         self.names: list[str] = []  # 学生名
         self.target_data: dict[str, str] = {}  # {'待处理名':'标准名', ...}
 
-        self.work_space = ""
+        self._work_space = Path()
+
+    @property
+    def work_space(self):
+        return self._work_space
+
+    @work_space.setter
+    def work_space(self, value: str):
+        self._work_space = Path(value)
 
     def init(self, path: str, fp: str = config_path):
         """
@@ -75,6 +83,5 @@ class FormateFile:
                 writer.writerows(rows)
 
     def rename_to_target(self):
-        # TODO:
         for k, value in self.target_data.items():
-            print(k, value)
+            (self.work_space / k).rename(self.work_space / value)

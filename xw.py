@@ -3,7 +3,7 @@ from PySide6.QtWidgets import QWidget, QApplication, QTableWidgetItem, QMessageB
 
 from UI.main_ui import Ui_Form as MainUi
 from Window.config import MyWindow as ConfigWindow
-from format_file import FormateFile
+from format_file import FileFormater
 from new_controls.GroupBox import DragDropGroupBox
 
 
@@ -18,7 +18,7 @@ class MyWindow(QWidget, MainUi):
         self.setupUi(self)
 
         # 初始化FormateFile对象
-        self.ff = FormateFile()
+        self.ff = FileFormater()
 
         # 禁用返回按钮
         self.back_pb.setEnabled(False)
@@ -40,14 +40,15 @@ class MyWindow(QWidget, MainUi):
         # 更新表格视图
         self.preview_pb.clicked.connect(lambda: self.update_tableView())
 
-        # 当自动调整列宽按钮被点击时，调整表格视图的列宽
-        self.auto_width_pb.clicked.connect(lambda: self.tableWidget.resizeColumnsToContents())
-
         # 当文件拖拽到组框内时，更新工作空间
         self.group_box.file_dropped.connect(self.update_work_space)
 
         # 执行重命名操作
-        self.start_pb.clicked.connect(self.ff.rename_to_target)
+        self.start_pb.clicked.connect(self.rename_to_target)
+
+    def rename_to_target(self):
+        self.ff.rename_to_target()
+        QMessageBox.information(self, 'info', '完成')
 
     def update_work_space(self, string: str):
         """ 更新self.ff中记录工作目录的work_space属性, 并更新self.fp_led的内容 """
@@ -88,7 +89,7 @@ class MyWindow(QWidget, MainUi):
             # 遍历目标数据，填充表格
             for i, (key, value) in enumerate(self.ff.target_data.items()):
                 self.tableWidget.setItem(i, 0, QTableWidgetItem(key))
-                self.tableWidget.setItem(i, 1, QTableWidgetItem("==>"))
+                self.tableWidget.setItem(i, 1, QTableWidgetItem("-->"))
                 self.tableWidget.setItem(i, 2, QTableWidgetItem(value))
 
             # 调整表格列宽以适应内容

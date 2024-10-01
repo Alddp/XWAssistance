@@ -62,10 +62,10 @@ class Ui_Form(object):
 
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.auto_width_pb = QPushButton(Form)
-        self.auto_width_pb.setObjectName(u"auto_width_pb")
+        self.show_skip_pb = QPushButton(Form)
+        self.show_skip_pb.setObjectName(u"show_skip_pb")
 
-        self.horizontalLayout_3.addWidget(self.auto_width_pb)
+        self.horizontalLayout_3.addWidget(self.show_skip_pb)
 
         self.back_pb = QPushButton(Form)
         self.back_pb.setObjectName(u"back_pb")
@@ -173,7 +173,7 @@ class Ui_Form(object):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
         self.search_led.setPlaceholderText(QCoreApplication.translate("Form", u"\u8f93\u5165\u5173\u952e\u8bcd", None))
         self.search_pb.setText(QCoreApplication.translate("Form", u"\u641c\u7d22", None))
-        self.auto_width_pb.setText(QCoreApplication.translate("Form", u"\u81ea\u52a8\u5217\u5bbd", None))
+        self.show_skip_pb.setText(QCoreApplication.translate("Form", u"\u67e5\u770b\u672a\u4ea4", None))
         self.back_pb.setText(QCoreApplication.translate("Form", u"\u64a4\u9500", None))
         self.start_pb.setText(QCoreApplication.translate("Form", u"\u5f00\u59cb", None))
         self.add_names_pb.setText(QCoreApplication.translate("Form", u"\u6dfb\u52a0\u540d\u5355", None))
