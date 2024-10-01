@@ -15,6 +15,12 @@ class File:
     def work_space(self, value: str):
         self._work_space = Path(value)
 
+    def init(self, work_space: str = ''):
+        ...
+
+    def start(self):
+        ...
+
 
 class FileFormater(File):
     config_path = "config/data.csv"
@@ -26,10 +32,12 @@ class FileFormater(File):
         self.names: list[str] = []  # 学生名
         self.target_data: dict[str, str] = {}  # {'待处理名':'标准名', ...}
 
-    def init(self, fp: str = config_path):
+    def init(self, work_space: str = '', fp: str = config_path):
         """
         初始化函数，直接加载所有属性
         """
+        self.work_space = work_space or self.work_space
+
         self.get_names_instances()
         self.read_data(fp)
         self.match_name()
@@ -99,10 +107,12 @@ class FileSimplifier(File):
         self.map: dict[Path, Path] = {}
         self.log: dict[Path, list[Path]] = {}
 
-    def init(self):
+    def init(self, work_space: str = ''):
         """
         简化文件路径的主方法，包括加载映射、日志和解析日志。
         """
+        self.work_space = work_space or self.work_space
+
         self.load_map()
         self.load_log()
 
@@ -113,6 +123,7 @@ class FileSimplifier(File):
         for main_folder, inner_files in self.log.items():
             crack_name = None
             renamed_file = None
+            # 文件中有特殊文件无法移动  --bug
             for inner_file in inner_files:
                 try:
                     shutil.move(inner_file, main_folder)
@@ -130,6 +141,14 @@ class FileSimplifier(File):
                 # 恢复文件名为inner_file.name
                 if renamed_file:
                     renamed_file.rename(renamed_file.parent / renamed_file.name.removesuffix(".tmp"))
+            else:
+                try:
+                    self.map[main_folder].rmdir()
+                except PermissionError as p:
+                    # TODO: 存储错误日志
+                    print(p)
+                except Exception as e:
+                    print(e)
 
     def load_log(self) -> dict[Path, list[Path]]:
         """
@@ -137,22 +156,26 @@ class FileSimplifier(File):
 
         :return: 包含文件夹及其文件的字典。
         """
-        for final_folder_p, folder_p in self.map.items():
+        # 重置self.map和self.log 修复第二次使用simplify无法更新表格的bug --bug
+        self.log = {}
+        for folder_p, final_folder_p in self.map.items():
             self.log[folder_p] = [file for file in final_folder_p.iterdir()]
         return self.log
 
     def load_map(self) -> dict[Path, Path]:
         """
         存储一层路径和深层路径的映射。
-        键是深层路径，值是一层路径。
+        键是一层路径，值是深层路径。
 
         :return: 包含路径映射的字典。
         """
+        # 重置self.map和self.log 修复第二次使用simplify无法更新表格的bug --bug
+        self.map = {}
         for folder_p in self.work_space.iterdir():
             if not folder_p.is_dir():
                 continue
             if (final_folder_p := self.got_to_final(folder_p)) != folder_p:
-                self.map[final_folder_p] = folder_p
+                self.map[folder_p] = final_folder_p
         return self.map
 
     def got_to_final(self, folder_p: str | Path) -> Path:
