@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QWidget, QApplication, QMessageBox
 
 from UI.write_config_ui import Ui_Form as ConfigUI
-from format_file import FileFormater
+from file_manage import FileFormater
 
 
 class MyWindow(QWidget, ConfigUI):

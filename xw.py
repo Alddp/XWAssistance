@@ -3,11 +3,10 @@ from PySide6.QtWidgets import QWidget, QApplication, QTableWidgetItem, QMessageB
 
 from UI.main_ui import Ui_Form as MainUi
 from Window.config import MyWindow as ConfigWindow
-from format_file import FileFormater
+from file_manage import FileFormater, FileSimplifier
 from new_controls.GroupBox import DragDropGroupBox
 
 
-# 主窗口类，继承自QWidget和MainUi
 class MyWindow(QWidget, MainUi):
 
     def __init__(self):
@@ -18,7 +17,8 @@ class MyWindow(QWidget, MainUi):
         self.setupUi(self)
 
         # 初始化FormateFile对象
-        self.ff = FileFormater()
+        self.f_formater = FileFormater()
+        self.f_simplifier = FileSimplifier()
 
         # 禁用返回按钮
         self.back_pb.setEnabled(False)
@@ -29,31 +29,56 @@ class MyWindow(QWidget, MainUi):
 
         self.group_box = DragDropGroupBox(self.groupBox).insert_to_Layout(self.verticalLayout)
 
+        # 当前模式
+        self.chosen_model = self.comboBox.currentText()
+
+        # 设置默认模式
+        self.set_format_model()
+
         # 绑定信号与槽函数
         self.bind()
 
     def bind(self):
-
         # 显示配置窗口
         self.add_names_pb.clicked.connect(self.show_config)
 
-        # 更新表格视图
-        self.preview_pb.clicked.connect(lambda: self.update_tableView())
-
         # 当文件拖拽到组框内时，更新工作空间
-        self.group_box.file_dropped.connect(self.update_work_space)
+        self.group_box.file_dropped.connect(self.fp_led.setText)
+        # 当输入框内容改变时，更新工作空间
+        self.fp_led.textChanged.connect(self.update_work_space)
 
-        # 执行重命名操作
-        self.start_pb.clicked.connect(self.rename_to_target)
+        self.comboBox.currentIndexChanged.connect(self.choose_function)
 
-    def rename_to_target(self):
-        self.ff.rename_to_target()
+    def set_format_model(self):
+        """ 切换模式为format """
+        self.start_pb.clicked.connect(self.format_files)
+        self.preview_pb.clicked.connect(lambda: self.show_format_table())
+
+    def set_simplify_model(self):
+        """ 切换模式为simplify """
+        ...
+    def set_convert_model(self):
+        """切换convert模式"""
+        ...
+
+    def choose_function(self, chosen_model: str):
+        """根据combobox当前索引选择模式"""
+        match chosen_model:
+            case 0:
+                self.set_format_model()
+            case 1:
+                self.set_simplify_model()
+            case 2:
+                self.set_convert_model()
+
+    def format_files(self):
+        self.f_formater.start()
         QMessageBox.information(self, 'info', '完成')
 
     def update_work_space(self, string: str):
         """ 更新self.ff中记录工作目录的work_space属性, 并更新self.fp_led的内容 """
-        self.fp_led.setText(string)
-        self.ff.work_space = string
+        self.f_formater.work_space = string
+        self.f_simplifier.work_space = string
 
     @staticmethod
     def show_config():
@@ -66,7 +91,7 @@ class MyWindow(QWidget, MainUi):
         edit_ui.load_history()
         edit_ui.show()
 
-    def update_tableView(self):
+    def show_format_table(self):
         """
         更新表格视图。
 
@@ -74,20 +99,20 @@ class MyWindow(QWidget, MainUi):
         包括设置列数、行数，并填充表格数据。如果在数据加载过程中发生异常，将显示错误消息对话框。
         """
         # 初始化文件操作对象
-        self.ff.init(self.fp_led.text())
+        self.f_formater.init()
         # 清除现有的表格数据
         self.tableWidget.clear()
 
         try:
             # 获取目标数据的键的数量
-            count = len(self.ff.target_data.keys())
+            count = len(self.f_formater.target_data.keys())
             self.tableWidget.setColumnCount(3)
             # 设置表格的列标签
             self.tableWidget.setHorizontalHeaderLabels(['folder', f'匹配:{count}', 'target'])
             # 设置表格行数为键的数量
             self.tableWidget.setRowCount(count)
             # 遍历目标数据，填充表格
-            for i, (key, value) in enumerate(self.ff.target_data.items()):
+            for i, (key, value) in enumerate(self.f_formater.target_data.items()):
                 self.tableWidget.setItem(i, 0, QTableWidgetItem(key))
                 self.tableWidget.setItem(i, 1, QTableWidgetItem("-->"))
                 self.tableWidget.setItem(i, 2, QTableWidgetItem(value))
@@ -98,6 +123,16 @@ class MyWindow(QWidget, MainUi):
         except Exception as e:
             print(e)
             QMessageBox.critical(self, "Error", f"Failed to load files: {e}")
+
+    def show_simplify_table(self):
+        # 初始化文件操作对象
+        self.f_simplifier.init()
+        # 清除现有的表格数据
+        self.tableWidget.clear()
+
+
+    def show_convert_table(self):
+        ...
 
 
 if __name__ == '__main__':
