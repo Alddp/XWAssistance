@@ -1,10 +1,20 @@
-# 导入所需的PySide6模块和自定义模块
+import os
+import sys
+from pathlib import Path
+
 from PySide6.QtWidgets import QWidget, QApplication, QTableWidgetItem, QMessageBox
 
 from UI.main_ui import Ui_Form as MainUi
 from Window.config import MyWindow as ConfigWindow
 from file_manage import FileFormater, FileSimplifier
 from new_controls.GroupBox import DragDropGroupBox
+
+# 切换工作目录
+if not Path(FileFormater.config_path).parent.exists():
+    print(getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__))))
+    os.chdir(getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__))))
+else:
+    print("检测到配置文件夹")
 
 
 class MyWindow(QWidget, MainUi):

@@ -1,5 +1,6 @@
 import csv
 import shutil
+from distutils.command.config import config
 from pathlib import Path
 
 
@@ -23,7 +24,7 @@ class File:
 
 
 class FileFormater(File):
-    config_path = "config/data.csv"
+    config_path = "./config/data.csv"
 
     def __init__(self):
         super().__init__()
