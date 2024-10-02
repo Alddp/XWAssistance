@@ -42,6 +42,7 @@ class MyWindow(QWidget, MainUi):
         # 当前模式
         self.chosen_model = self.comboBox.currentText()
 
+        self.preview_pb.clicked.connect(lambda: self.start_pb.setEnabled(True))
         # 绑定信号与槽函数
         self.bind()
 
@@ -154,7 +155,11 @@ class MyWindow(QWidget, MainUi):
 
     def show_simplify_table(self):
         # 初始化文件操作对象
-        self.f_simplifier.init(self.fp_led.text())
+        try:
+            self.f_simplifier.init(self.fp_led.text())
+        except NotADirectoryError as e:
+            QMessageBox.critical(self, "Error", str(e))
+
         # 清除现有的表格数据
         self.tableWidget.clear()
 

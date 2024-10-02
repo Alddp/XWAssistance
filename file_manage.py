@@ -1,6 +1,5 @@
 import csv
 import shutil
-from distutils.command.config import config
 from pathlib import Path
 
 
@@ -85,15 +84,10 @@ class FileFormater(File):
         with open(config_path, 'w', encoding='utf8', newline='') as f:
             writer = csv.writer(f)
             try:
-                for name, f_name in zip(names, f_names):
-                    if name in f_name:
-                        writer.writerow([name, f_name])
-                    else:
-                        raise IndexError("一个名称未找到对应的文件名")
-            except IndexError:
-                # 如果有错误，记录所有匹配的行
                 rows = [[name, f_name] for name in names for f_name in f_names if name in f_name]
                 writer.writerows(rows)
+            except Exception:
+                raise
 
     def start(self):
         for k, value in self.target_data.items():

@@ -42,6 +42,7 @@ class Ui_Form(object):
 
         self.search_pb = QPushButton(Form)
         self.search_pb.setObjectName(u"search_pb")
+        self.search_pb.setEnabled(False)
 
         self.horizontalLayout_2.addWidget(self.search_pb)
 
@@ -64,16 +65,19 @@ class Ui_Form(object):
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.show_skip_pb = QPushButton(Form)
         self.show_skip_pb.setObjectName(u"show_skip_pb")
+        self.show_skip_pb.setEnabled(False)
 
         self.horizontalLayout_3.addWidget(self.show_skip_pb)
 
         self.back_pb = QPushButton(Form)
         self.back_pb.setObjectName(u"back_pb")
+        self.back_pb.setEnabled(False)
 
         self.horizontalLayout_3.addWidget(self.back_pb)
 
         self.start_pb = QPushButton(Form)
         self.start_pb.setObjectName(u"start_pb")
+        self.start_pb.setEnabled(False)
 
         self.horizontalLayout_3.addWidget(self.start_pb)
 

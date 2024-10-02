@@ -31,6 +31,9 @@
            </item>
            <item>
             <widget class="QPushButton" name="search_pb">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>搜索</string>
              </property>
@@ -66,6 +69,9 @@
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
           <widget class="QPushButton" name="show_skip_pb">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="text">
             <string>查看未交</string>
            </property>
@@ -73,6 +79,9 @@
          </item>
          <item>
           <widget class="QPushButton" name="back_pb">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="text">
             <string>撤销</string>
            </property>
@@ -80,6 +89,9 @@
          </item>
          <item>
           <widget class="QPushButton" name="start_pb">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
            <property name="text">
             <string>开始</string>
            </property>
